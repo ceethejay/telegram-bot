@@ -14,7 +14,7 @@ $channel_id = "-100xxxxxxxxxx";
 
     //Extact match Commands
     if($message == "/start"){
-        send_message($chat_id, "Hi, <b>$firstname</b>\nUse /cmds to view <b>commands</b>. \nBot owner: @izukuuuuu");
+        send_message($chat_id, "Hi, $firstname\nUse /cmds to view commands. \nBot owner: @izukuuuuu");
     }
 
     if($message == "/cmds"){
