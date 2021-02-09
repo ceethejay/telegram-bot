@@ -14,7 +14,7 @@ $channel_id = "-100xxxxxxxxxx";
 
     //Extact match Commands
     if($message == "/start"){
-        send_message($chat_id, "Hey $firstname I am $bot_name \nSupport Group - @world_bots \nUse /cmds to view commands \nBot developed by @reboot13 ");
+        send_message($chat_id, "Hi, <b>$firstname</b>\nUse /cmds to view <b>commands</b>. \nBot owner: @izukuuuuu");
     }
 
     if($message == "/cmds"){
@@ -105,23 +105,23 @@ if ($id == 1171876903 || $id == 1478297206 || $id == 654455829 || $id == 6381783
         $bin = substr($message, 5);
    $curl = curl_init();
    curl_setopt_array($curl, [
-	CURLOPT_URL => "https://lookup.binlist.net/".$bin,
-	CURLOPT_RETURNTRANSFER => true,
-	CURLOPT_FOLLOWLOCATION => true,
-	CURLOPT_ENCODING => "",
-	CURLOPT_MAXREDIRS => 10,
-	CURLOPT_TIMEOUT => 30,
-	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	CURLOPT_CUSTOMREQUEST => "GET",
-	CURLOPT_HTTPHEADER => [
-		"authority: lookup.binlist.net",
-		"accept: application/json",
-		"accept-language: en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",
-		"origin: https://binlist.net",
-		"https://binlist.net/",
-		"sec-fetch-dest: empty",
-		"sec-fetch-site: same-site"
-	],
+  CURLOPT_URL => "https://lookup.binlist.net/".$bin,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => [
+    "authority: lookup.binlist.net",
+    "accept: application/json",
+    "accept-language: en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",
+    "origin: https://binlist.net",
+    "https://binlist.net/",
+    "sec-fetch-dest: empty",
+    "sec-fetch-site: same-site"
+  ],
 ]);
 
 $result = curl_exec($curl);
@@ -157,19 +157,19 @@ if(strpos($message, "/weather") === 0){
    $curl = curl_init();
    curl_setopt_array($curl, [
 CURLOPT_URL => "http://api.openweathermap.org/data/2.5/weather?q=$location&appid=89ef8a05b6c964f4cab9e2f97f696c81",
-	CURLOPT_RETURNTRANSFER => true,
-	CURLOPT_FOLLOWLOCATION => true,
-	CURLOPT_ENCODING => "",
-	CURLOPT_MAXREDIRS => 10,
-	CURLOPT_TIMEOUT => 50,
-	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	CURLOPT_CUSTOMREQUEST => "GET",
-	CURLOPT_HTTPHEADER => [
-		"Accept: */*",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 50,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => [
+    "Accept: */*",
         "Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",
         "Host: api.openweathermap.org",
         "sec-fetch-dest: empty",
-		"sec-fetch-site: same-site"
+    "sec-fetch-site: same-site"
   ],
 ]);
 
@@ -265,54 +265,54 @@ else {
     }
 
 ///Dicitonary API
-if(strpos($message, "/dict") === 0){	
-        $dict = substr($message, 6);	
-   $curl = curl_init();	
-   curl_setopt_array($curl, [	
-	CURLOPT_URL => "https://api.dictionaryapi.dev/api/v2/entries/en/$dict",	
-	CURLOPT_RETURNTRANSFER => true,	
-	CURLOPT_FOLLOWLOCATION => true,	
-	CURLOPT_ENCODING => "",	
-	CURLOPT_MAXREDIRS => 10,	
-	CURLOPT_TIMEOUT => 30,	
-	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,	
-	CURLOPT_CUSTOMREQUEST => "GET",	
-	CURLOPT_HTTPHEADER => [	
-		"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",	
-        "Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",	
-        "Host: oxforddictionaryapi.herokuapp.com",	
-        "Sec-Fetch-Dest: empty",	
-        "Sec-Fetch-Mode: cors",	
-        "Sec-Fetch-Site: cross-site",	
-        ],	
-]);	
+if(strpos($message, "/dict") === 0){  
+        $dict = substr($message, 6);  
+   $curl = curl_init(); 
+   curl_setopt_array($curl, [ 
+  CURLOPT_URL => "https://api.dictionaryapi.dev/api/v2/entries/en/$dict", 
+  CURLOPT_RETURNTRANSFER => true, 
+  CURLOPT_FOLLOWLOCATION => true, 
+  CURLOPT_ENCODING => "", 
+  CURLOPT_MAXREDIRS => 10,  
+  CURLOPT_TIMEOUT => 30,  
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,  
+  CURLOPT_CUSTOMREQUEST => "GET", 
+  CURLOPT_HTTPHEADER => [ 
+    "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",  
+        "Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7", 
+        "Host: oxforddictionaryapi.herokuapp.com",  
+        "Sec-Fetch-Dest: empty",  
+        "Sec-Fetch-Mode: cors", 
+        "Sec-Fetch-Site: cross-site", 
+        ],  
+]); 
 
 
-  $dictionary = curl_exec($curl);	
-  curl_close($curl);	
+  $dictionary = curl_exec($curl); 
+  curl_close($curl);  
 
-$out = json_decode($dictionary, true);	
-$word = $out[0]['word'];	
-$noun= $out[0]['meaning']['noun'][0]['definition'];	
-$verb = $out[0]['meaning']['verb'][0]['definition'];	
-$adjective = $out[0]['meaning']['adjective'][0]['definition'];	
-$adverb = $out[0]['meaning']['adverb'][0]['definition'];	
-$pronoun = $out[0]['meaning']['pronoun'][0]['definition'];	
+$out = json_decode($dictionary, true);  
+$word = $out[0]['word'];  
+$noun= $out[0]['meaning']['noun'][0]['definition']; 
+$verb = $out[0]['meaning']['verb'][0]['definition'];  
+$adjective = $out[0]['meaning']['adjective'][0]['definition'];  
+$adverb = $out[0]['meaning']['adverb'][0]['definition'];  
+$pronoun = $out[0]['meaning']['pronoun'][0]['definition'];  
 
-if ($word = $dict) {	
-    send_message($chat_id, "	
-Word: $word 	
-Noun : $noun	
-Pronoun: $pronoun 	
-Verb : $verb 	
-Adjective: $adjective 	
-Adverb: $adverb 	
-Checked By @$username ");	
-    }	
-    else {	
-        send_message($chat_id, "Invalid Input");	
-    }	
-}	
+if ($word = $dict) {  
+    send_message($chat_id, "  
+Word: $word   
+Noun : $noun  
+Pronoun: $pronoun   
+Verb : $verb  
+Adjective: $adjective   
+Adverb: $adverb   
+Checked By @$username "); 
+    } 
+    else {  
+        send_message($chat_id, "Invalid Input");  
+    } 
+} 
 
 
 
